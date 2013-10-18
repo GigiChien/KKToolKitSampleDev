@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/add__event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add event"
+        android:gravity="left"/>
+
+    <Button
+         android:id="@+id/start_event"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Start event"
+         android:gravity="left"/>
+
+    <Button
+            android:id="@+id/clear_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="clear pending event"
+            android:gravity="left"/>
+
+    <TextView
+            android:id="@+id/pending_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"/>
+
+    <TextView
+         android:id="@+id/job_status"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="left"/>
+
+</LinearLayout>
