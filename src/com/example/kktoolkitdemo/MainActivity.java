@@ -11,6 +11,10 @@ import android.widget.ListView;
 
 import com.example.kktoolkitdemo.actionbar.ActionBarActivity;
 import com.example.kktoolkitdemo.eventqueue.EventQueueActivity;
+import com.example.kktoolkitdemo.messageview.KKMessageViewActivity;
+import com.example.kktoolkitdemo.resizableview.ResizableViewActivity;
+import com.example.kktoolkitdemo.viewpager.InfiniteViewPagerActivity;
+import com.kkbox.toolkit.ui.ResizableView;
 
 public class MainActivity extends ListActivity {
     private String[] mStrings = {
@@ -31,6 +35,15 @@ public class MainActivity extends ListActivity {
         switch(position){
             case 0:
                 intent = new Intent(MainActivity.this, ActionBarActivity.class);
+                break;
+            case 1:
+                intent = new Intent(MainActivity.this, KKMessageViewActivity.class);
+                break;
+            case 2:
+                intent = new Intent(MainActivity.this, InfiniteViewPagerActivity.class);
+                break;
+            case 3:
+                intent = new Intent(MainActivity.this, ResizableViewActivity.class);
                 break;
             case 4:
                 intent = new Intent(MainActivity.this, EventQueueActivity.class);
