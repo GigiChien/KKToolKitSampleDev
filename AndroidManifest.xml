@@ -3,7 +3,7 @@
     package="com.example.kktoolkitdemo"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
@@ -56,6 +56,31 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".listview.KKListViewActivity"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".listview.KKDragAndDropListViewActivity"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".tabfragment.ActivityTabFragment"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".image.ActivityImage"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

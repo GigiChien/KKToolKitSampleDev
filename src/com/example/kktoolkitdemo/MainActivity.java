@@ -3,18 +3,19 @@ package com.example.kktoolkitdemo;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.kktoolkitdemo.actionbar.ActionBarActivity;
 import com.example.kktoolkitdemo.eventqueue.EventQueueActivity;
+import com.example.kktoolkitdemo.image.ActivityImage;
+import com.example.kktoolkitdemo.listview.KKDragAndDropListViewActivity;
+import com.example.kktoolkitdemo.listview.KKListViewActivity;
 import com.example.kktoolkitdemo.messageview.KKMessageViewActivity;
 import com.example.kktoolkitdemo.resizableview.ResizableViewActivity;
+import com.example.kktoolkitdemo.tabfragment.ActivityTabFragment;
 import com.example.kktoolkitdemo.viewpager.InfiniteViewPagerActivity;
-import com.kkbox.toolkit.ui.ResizableView;
 
 public class MainActivity extends ListActivity {
     private String[] mStrings = {
@@ -22,7 +23,12 @@ public class MainActivity extends ListActivity {
             "KKMessageView",
             "ViewPager",
             "ResizableView",
-            "EventQueue"};
+            "EventQueue",
+            "KKListView",
+            "KKDragAndDropListView",
+            "KKTabFragment",
+            "KKImageManager"};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +53,18 @@ public class MainActivity extends ListActivity {
                 break;
             case 4:
                 intent = new Intent(MainActivity.this, EventQueueActivity.class);
+                break;
+            case 5:
+                intent = new Intent(MainActivity.this, KKListViewActivity.class);
+                break;
+            case 6:
+                intent = new Intent(MainActivity.this, KKDragAndDropListViewActivity.class);
+                break;
+            case 7:
+                intent = new Intent(MainActivity.this, ActivityTabFragment.class);
+                break;
+            case 8:
+                intent = new Intent(MainActivity.this, ActivityImage.class);
                 break;
         }
         if (intent != null) {
