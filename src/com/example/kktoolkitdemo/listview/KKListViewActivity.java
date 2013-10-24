@@ -30,7 +30,6 @@ public class KKListViewActivity extends KKActivity {
         // Get a cursor with all people
         Cursor c = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
                 CONTACT_PROJECTION, null, null, null);
-        startManagingCursor(c);
 
         ListAdapter adapter = new SimpleCursorAdapter(this,
                 // Use a template that displays a text view

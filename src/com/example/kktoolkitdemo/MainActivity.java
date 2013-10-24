@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.kktoolkitdemo.actionbar.ActionBarActivity;
+import com.example.kktoolkitdemo.api.KKAPIActivity;
 import com.example.kktoolkitdemo.eventqueue.EventQueueActivity;
+import com.example.kktoolkitdemo.fragment.ListFragmentActivity;
 import com.example.kktoolkitdemo.image.ActivityImage;
 import com.example.kktoolkitdemo.listview.KKDragAndDropListViewActivity;
 import com.example.kktoolkitdemo.listview.KKListViewActivity;
@@ -27,7 +29,9 @@ public class MainActivity extends ListActivity {
             "KKListView",
             "KKDragAndDropListView",
             "KKTabFragment",
-            "KKImageManager"};
+            "KKImageManager",
+            "KKAPIBase",
+            "KKFragment"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,12 @@ public class MainActivity extends ListActivity {
                 break;
             case 8:
                 intent = new Intent(MainActivity.this, ActivityImage.class);
+                break;
+            case 9:
+                intent = new Intent(MainActivity.this, KKAPIActivity.class);
+                break;
+            case 10:
+                intent = new Intent(MainActivity.this, ListFragmentActivity.class);
                 break;
         }
         if (intent != null) {

@@ -18,15 +18,14 @@
 package com.example.kktoolkitdemo.image;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.kktoolkitdemo.FakeData;
 import com.example.kktoolkitdemo.R;
+import com.example.kktoolkitdemo.SampleUtil;
 import com.kkbox.toolkit.image.KKImageListener;
 import com.kkbox.toolkit.image.KKImageManager;
 import com.kkbox.toolkit.ui.KKActivity;
@@ -49,7 +48,7 @@ public class ActivityImage extends KKActivity {
 		@Override
 		public void onClick(View v) {
 			Random ran = new Random();
-			imageManager.updateViewSource(imageView, FakeData.pic_url[ran.nextInt(6)], null, R.drawable.ic_launcher);
+			imageManager.updateViewSource(imageView, SampleUtil.pic_url[ran.nextInt(6)], null, R.drawable.ic_launcher);
 		}
 	};
 
@@ -57,7 +56,7 @@ public class ActivityImage extends KKActivity {
 		@Override
 		public void onClick(View v) {
 			Random ran = new Random();
-			imageManager.loadBitmap(imageListener, FakeData.pic_url[ran.nextInt(6)], null);
+			imageManager.loadBitmap(imageListener, SampleUtil.pic_url[ran.nextInt(6)], null);
 		}
 	};
 
@@ -73,6 +72,6 @@ public class ActivityImage extends KKActivity {
 
 		button = (Button)findViewById(R.id.button_manual_update_image);
 		button.setOnClickListener(buttonManualUpdateImageClickListener);
-		imageManager.updateViewSource(imageView, FakeData.pic_url[0], null, R.drawable.ic_launcher);
+		imageManager.updateViewSource(imageView, SampleUtil.pic_url[0], null, R.drawable.ic_launcher);
 	}
 }

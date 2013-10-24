@@ -4,6 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
@@ -76,6 +77,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".image.ActivityImage"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".api.KKAPIActivity"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".fragment.ListFragmentActivity"
                   android:theme="@style/KKActivityTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

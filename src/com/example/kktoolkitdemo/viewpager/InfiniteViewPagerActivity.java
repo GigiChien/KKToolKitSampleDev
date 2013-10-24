@@ -1,23 +1,20 @@
 package com.example.kktoolkitdemo.viewpager;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.kktoolkitdemo.R;
+import com.example.kktoolkitdemo.SampleUtil;
 import com.kkbox.toolkit.listview.adapter.InfiniteViewPagerAdapter;
 import com.kkbox.toolkit.ui.InfiniteViewPager;
 import com.kkbox.toolkit.ui.KKActivity;
 import com.kkbox.toolkit.ui.OnInfiniteViewPagerPageChangeListener;
+import com.kkbox.toolkit.utils.KKDebug;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by gigichien on 13/10/21.
@@ -44,17 +41,17 @@ public class InfiniteViewPagerActivity extends KKActivity {
         mViewPager.setOnPageChangeListener(new OnInfiniteViewPagerPageChangeListener(mViewPager) {
             @Override
             public void onLoopPageSelected(int position) {
-
+                KKDebug.i(SampleUtil.LOG_TAG, "OnInfiniteViewPagerPageChangeListener onLoopPageSelected");
             }
 
             @Override
             public void onPageScrollLeft() {
-
+                KKDebug.i(SampleUtil.LOG_TAG, "OnInfiniteViewPagerPageChangeListener onPageScrollLeft");
             }
 
             @Override
             public void onPageScrollRight() {
-
+                KKDebug.i(SampleUtil.LOG_TAG, "OnInfiniteViewPagerPageChangeListener onPageScrollRight");
             }
         });
 
@@ -65,38 +62,10 @@ public class InfiniteViewPagerActivity extends KKActivity {
 
         public ViewPagerAdapter(ArrayList<Integer> content, boolean loopEnabled) {
             super((ArrayList)content, loopEnabled);
-            Log.v("GGG", "views size - "+content.size());
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return super.getItem(position);
-        }
-
-        @Override
-        public boolean isLoopEnabled() {
-            return super.isLoopEnabled();
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
-
-        }
-
-        @Override
-        public int getCount() {
-            return super.getCount();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return super.isViewFromObject(view, object);
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Log.v("GGG", "instantiateItem - "+position);
             TextView v = new TextView(getApplicationContext());
             v.setGravity(Gravity.CENTER);
             Integer index = (Integer)getItem(position);
@@ -115,7 +84,6 @@ public class InfiniteViewPagerActivity extends KKActivity {
                     break;
 
             }
-
             ((ViewPager)container).addView(v);
             return v;
         }
