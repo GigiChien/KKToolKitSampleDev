@@ -47,21 +47,26 @@ public class EventQueueActivity extends KKActivity {
             @Override
             public void onClick(View view) {
                 mPending ++;
-                eventQueue.add(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.sendEmptyMessage(UPDATE_STATUS_RUNNING);
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                txtNumPending.setText("Pending : "+ mPending);
+                eventQueue.addNewThreadEvent(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                mPending--;
+                            }
+                        },
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                txtNumPending.setText("Pending : " + mPending);
+                            }
                         }
-
-                        mPending --;
-                        mHandler.sendEmptyMessage(UPDATE_PENDING_NUMBER);
-                    }
-                }, KKEventQueue.ThreadType.NEW_THREAD);
-                mHandler.sendEmptyMessage(UPDATE_PENDING_NUMBER);
+                );
             }
         });
 
@@ -69,7 +74,7 @@ public class EventQueueActivity extends KKActivity {
             @Override
             public void onClick(View view) {
                 eventQueue.start();
-
+                txtEventStatus.setText("Status : Running");
             }
         });
 
@@ -102,14 +107,11 @@ public class EventQueueActivity extends KKActivity {
         super.onDestroy();
     }
 
-    private static final int UPDATE_STATUS_RUNNING = 1;
     private static final int UPDATE_PENDING_NUMBER = 2;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {
-                case UPDATE_STATUS_RUNNING:
-                    txtEventStatus.setText("Status : Running");
                 case UPDATE_PENDING_NUMBER:
                     txtNumPending.setText("Pending : "+ mPending);
                     break;

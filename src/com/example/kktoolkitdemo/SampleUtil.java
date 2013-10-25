@@ -20,14 +20,15 @@ package com.example.kktoolkitdemo;
 public class SampleUtil {
 
     public static String LOG_TAG = "KKToolKitDemo";
-    public static String[] test_item = { "Taipei", "Tokyo", "London", "Seattle", "error" };
+    public static String[] test_item = { "Taipei", "Tokyo", "London", "Seattle", "Error" };
 
     public static String[] pic_url = {
-            "http://i.eimg.com.tw/d/alb/82/1561682.300.jpg",
-            "http://i.eimg.com.tw/d/alb/79/1561679.300.jpg",
-            "http://i.eimg.com.tw/d/alb/2/1559602.300.jpg",
-            "http://i.eimg.com.tw/d/alb/32/446532.300.jpg",
-            "http://i.eimg.com.tw/d/alb/9/1561709.300.jpg",
-            "http://i.eimg.com.tw/d/alb/85/1554685.300.jpg"
+            "http://openweathermap.org/img/w/01d.png",
+            "http://openweathermap.org/img/w/02d.png",
+            "http://openweathermap.org/img/w/03d.png",
+            "http://openweathermap.org/img/w/04d.png",
+            "http://openweathermap.org/img/w/10d.png"
     };
+
+
 }

@@ -70,7 +70,7 @@ public class KKAPIActivity extends KKActivity {
         }
     }
 
-    private final KKAPIListener exampleAPIListener = new KKAPIListener() {
+    private KKAPIListener exampleAPIListener = new KKAPIListener() {
         @Override
         public void onAPIComplete() {
             ExampleWeatherAPI.WeatherData data = mAPI.getWeatherData();

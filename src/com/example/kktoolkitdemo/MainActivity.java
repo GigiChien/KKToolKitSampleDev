@@ -11,13 +11,16 @@ import com.example.kktoolkitdemo.actionbar.ActionBarActivity;
 import com.example.kktoolkitdemo.api.KKAPIActivity;
 import com.example.kktoolkitdemo.eventqueue.EventQueueActivity;
 import com.example.kktoolkitdemo.fragment.ListFragmentActivity;
-import com.example.kktoolkitdemo.image.ActivityImage;
+import com.example.kktoolkitdemo.image.ImageManagerActivity;
 import com.example.kktoolkitdemo.listview.KKDragAndDropListViewActivity;
 import com.example.kktoolkitdemo.listview.KKListViewActivity;
 import com.example.kktoolkitdemo.messageview.KKMessageViewActivity;
+import com.example.kktoolkitdemo.notification.ActivityNotification;
 import com.example.kktoolkitdemo.resizableview.ResizableViewActivity;
+import com.example.kktoolkitdemo.service.ServiceActivity;
 import com.example.kktoolkitdemo.tabfragment.ActivityTabFragment;
 import com.example.kktoolkitdemo.viewpager.InfiniteViewPagerActivity;
+import com.kkbox.toolkit.ui.KKServiceActivity;
 
 public class MainActivity extends ListActivity {
     private String[] mStrings = {
@@ -31,7 +34,9 @@ public class MainActivity extends ListActivity {
             "KKTabFragment",
             "KKImageManager",
             "KKAPIBase",
-            "KKFragment"};
+            "KKFragment",
+            "KKDialog",
+            "KKServiceActivity"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +73,19 @@ public class MainActivity extends ListActivity {
                 intent = new Intent(MainActivity.this, ActivityTabFragment.class);
                 break;
             case 8:
-                intent = new Intent(MainActivity.this, ActivityImage.class);
+                intent = new Intent(MainActivity.this, ImageManagerActivity.class);
                 break;
             case 9:
                 intent = new Intent(MainActivity.this, KKAPIActivity.class);
                 break;
             case 10:
                 intent = new Intent(MainActivity.this, ListFragmentActivity.class);
+                break;
+            case 11:
+                intent = new Intent(MainActivity.this, ActivityNotification.class);
+                break;
+            case 12:
+                intent = new Intent(MainActivity.this, ServiceActivity.class);
                 break;
         }
         if (intent != null) {
