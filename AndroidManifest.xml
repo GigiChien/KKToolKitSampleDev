@@ -110,6 +110,12 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".notification.EmptyActivity"
+                  android:theme="@style/KKActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

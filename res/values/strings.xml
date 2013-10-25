@@ -10,8 +10,8 @@
     <string name="auto_update_image">Auto Update Image</string>
     <string name="manual_update_image">Manual Update Image</string>
     <string name="imageview">Image View</string>
-    <string name="notify_1">1 Button Dialog</string>
-    <string name="notify_2">2 Button Dialog</string>
-    <string name="notify_3">3 Button Dialog</string>
-    <string name="notify_4">Progressing Dialog</string>
+    <string name="notify_1">Delay Show Alert Dialog</string>
+    <string name="notify_2">Delay Show Notify Dialog</string>
+    <string name="notify_3">Delay Show Choice Dialog</string>
+    <string name="notify_4">Delay Show Progressing Dialog</string>
 </resources>

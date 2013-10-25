@@ -25,35 +25,14 @@ import android.util.Log;
 import com.kkbox.toolkit.KKService;
 
 public class ExampleService extends KKService {
-    Handler mHandler;
-    @Override
-    public IBinder onBind(Intent i) {
-        return super.onBind(i);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.v("GGG", "onCreate");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
 
     @Override
 	public void initServiceComponent() {
+
 	}
 
 	@Override
 	public void finalize() {
-        Log.v("GGG", "finalize");
 	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.v("GGG", "onDestroy");
-    }
 }

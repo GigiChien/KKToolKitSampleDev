@@ -3,6 +3,7 @@ package com.example.kktoolkitdemo.eventqueue;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.kkbox.toolkit.ui.KKActivity;
 import com.kkbox.toolkit.utils.KKEventQueue;
 import com.kkbox.toolkit.utils.KKEventQueueListener;
 
+import java.util.ArrayList;
 
 
 /**
@@ -19,35 +21,40 @@ import com.kkbox.toolkit.utils.KKEventQueueListener;
  */
 public class EventQueueActivity extends KKActivity {
     private KKEventQueue eventQueue;
-    TextView txtNumPending, txtEventStatus;
+    TextView txtEventStatus, txtLockID;
+    int mID = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_eventqueue);
 
         setEventQueueUsage();
-        mHandler.sendEmptyMessage(UPDATE_PENDING_NUMBER);
-        txtEventStatus.setText("Status : Finished");
+        txtEventStatus.setText("Status : Not started");
     }
 
-    int mPending = 0;
+    ArrayList<Integer> mLockId;
+
     private void setEventQueueUsage(){
         eventQueue = new KKEventQueue();
         eventQueue.setListener(eventQueuelistener);
 
-        Button btnAddEvent, btnClearEvent, btnStartEvent;
+        Button btnAddEvent, btnClearEvent, btnStartEvent, btnLockEvent, btnUnlockEvent, btnUnlockAllEvent;
         btnAddEvent = (Button) findViewById(R.id.add__event);
         btnStartEvent = (Button) findViewById(R.id.start_event);
         btnClearEvent = (Button) findViewById(R.id.clear_event);
+        btnLockEvent = (Button) findViewById(R.id.lock_event);
+        btnUnlockEvent = (Button) findViewById(R.id.unlock_event);
+        btnUnlockAllEvent = (Button) findViewById(R.id.unlock_all_event);
 
-        txtNumPending = (TextView) findViewById(R.id.pending_num);
+        txtLockID = (TextView) findViewById(R.id.lock_id);
         txtEventStatus = (TextView) findViewById(R.id.job_status);
+
+        mLockId = new ArrayList<Integer>();
 
         btnAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPending ++;
-                txtNumPending.setText("Pending : "+ mPending);
+
                 eventQueue.addNewThreadEvent(
                         new Runnable() {
                             @Override
@@ -57,13 +64,12 @@ public class EventQueueActivity extends KKActivity {
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                mPending--;
                             }
                         },
                         new Runnable() {
                             @Override
                             public void run() {
-                                txtNumPending.setText("Pending : " + mPending);
+
                             }
                         }
                 );
@@ -73,8 +79,54 @@ public class EventQueueActivity extends KKActivity {
         btnStartEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!eventQueue.isRunning())
+                    txtEventStatus.setText("Status : Running");
                 eventQueue.start();
-                txtEventStatus.setText("Status : Running");
+            }
+        });
+
+        btnLockEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               final int id = mID++;
+               mLockId.add(id);
+               printLockID();
+                eventQueue.addCallerThreadEventWithLock(new Runnable() {
+                    @Override
+                    public void run() {
+                        txtEventStatus.setText("Status : Locked,  ID = " + id);
+                    }
+                }, id);
+            }
+        });
+
+        btnUnlockEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!mLockId.isEmpty())
+                {
+                    eventQueue.unlockEvent(mLockId.get(0));
+                    mLockId.remove(0);
+                    printLockID();
+
+                    if (eventQueue.isRunning())
+                    {
+                        txtEventStatus.setText("Status : Running");
+                    }
+                }
+            }
+        });
+
+        btnUnlockAllEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventQueue.unlockAllEvents();
+                mLockId.clear();
+                printLockID();
+                if (eventQueue.isRunning())
+                {
+                    txtEventStatus.setText("Status : Running");
+                }
             }
         });
 
@@ -82,12 +134,8 @@ public class EventQueueActivity extends KKActivity {
             @Override
             public void onClick(View view) {
                 eventQueue.clearPendingEvents();
-                if(!eventQueue.isRunning()){
-                    mPending = 0;
+                if (eventQueue.isRunning()) {
                     txtEventStatus.setText("Status : Finished");
-                    mHandler.sendEmptyMessage(UPDATE_PENDING_NUMBER);
-                } else {
-                    mPending = 1;
                 }
             }
         });
@@ -107,16 +155,12 @@ public class EventQueueActivity extends KKActivity {
         super.onDestroy();
     }
 
-    private static final int UPDATE_PENDING_NUMBER = 2;
-    private Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message message) {
-            switch (message.what) {
-                case UPDATE_PENDING_NUMBER:
-                    txtNumPending.setText("Pending : "+ mPending);
-                    break;
-
-            }
+    private void printLockID(){
+        String s = "";
+        for(Integer id : mLockId){
+            s += "Lock ID : "+id + "\n";
         }
-    };
+        txtLockID.setText(s);
+    }
+
 }

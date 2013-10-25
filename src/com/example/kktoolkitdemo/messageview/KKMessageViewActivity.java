@@ -31,13 +31,12 @@ public class KKMessageViewActivity extends KKActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.v("GGG", "getID - " + item.getItemId());
-        switch(item.getItemId()){
+       switch(item.getItemId()){
             case 0:
-                mMsg.setSingleTextView("This is SingleTextView");
+                mMsg.setSingleTextView("Loading...");
                 break;
             case 1:
-                mMsg.setMultiTextView("Title", "This is MultipleTextView");
+                mMsg.setMultiTextView("KKBOX Message", "Loading...");
                 break;
         }
         return super.onOptionsItemSelected(item);

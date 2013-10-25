@@ -17,7 +17,10 @@
  */
 package com.example.kktoolkitdemo.notification;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,59 +32,101 @@ import com.kkbox.toolkit.ui.KKServiceActivity;
 
 public class ActivityNotification extends KKServiceActivity {
 
-	private OnClickListener btnNotifyOne = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			ExampleService.getDialogNotificationManager().addDialog(
-					KKDialogFactory.createAlertDialog(0, "KKBOX Reminder", "This is a test message", "Confirm", null));
-		}
-	};
+    private final OnClickListener btnNotifyOne = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mHandler.sendEmptyMessageDelayed(MSG_ALERT_DLG, 3000);
+            Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
+            startActivity(intent);
 
-	private OnClickListener btnNotifyTwo = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			ExampleService.getDialogNotificationManager().addDialog(
-					KKDialogFactory.createYesOrNoDialog(2, "KKBOX Reminder", "This is a test message", "Yes", "No", null));
-		}
-	};
+        }
+    };
 
-	private OnClickListener btnNotifyThree = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			ExampleService.getDialogNotificationManager().addDialog(
-					KKDialogFactory
-							.createThreeChoiceDialog(1, "KKBOX Reminder", "This is a test message", "Retry", "Ignore", "Abort", null));
-		}
-	};
+    private final OnClickListener btnNotifyTwo = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mHandler.sendEmptyMessageDelayed(MSG_NOTIFY_TWO_DLG, 3000);
+            Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
+            startActivity(intent);
+        }
+    };
 
-	private OnClickListener btnNotifyFour = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			ExampleService.getDialogNotificationManager().addDialog(
-					KKDialogFactory.createProgressingDialog(3, "Progressing", new KKDialogPostExecutionListener() {
-						@Override
-						public void onCancel() {
-							ExampleService.getDialogNotificationManager().addDialog(
-									KKDialogFactory.createAlertDialog(0, "KKBOX Reminder", "dialog canceled", "OK", null));
-						}
-					}));
-		}
-	};
+    private final OnClickListener btnNotifyThree = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mHandler.sendEmptyMessageDelayed(MSG_CHOICE_DLG, 3000);
+            Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
+            startActivity(intent);
+        }
+    };
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.notification_example);
-		getKKActionBar().setTitle("Notification Example");
+    private final OnClickListener btnNotifyFour = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mHandler.sendEmptyMessageDelayed(MSG_PROCESSING_DLG, 3000);
+            Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
+            startActivity(intent);
+        }
+    };
 
-		Button btnNotify1 = (Button)findViewById(R.id.btnNotify1);
-		btnNotify1.setOnClickListener(btnNotifyOne);
-		Button btnNotify2 = (Button)findViewById(R.id.btnNotify2);
-		btnNotify2.setOnClickListener(btnNotifyTwo);
-		Button btnNotify3 = (Button)findViewById(R.id.btnNotify3);
-		btnNotify3.setOnClickListener(btnNotifyThree);
-		Button btnNotify4 = (Button)findViewById(R.id.btnNotify4);
-		btnNotify4.setOnClickListener(btnNotifyFour);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.notification_example);
+        getKKActionBar().setTitle("Notification Example");
 
+        Button btnNotify1 = (Button) findViewById(R.id.btnNotify1);
+        btnNotify1.setOnClickListener(btnNotifyOne);
+        Button btnNotify2 = (Button) findViewById(R.id.btnNotify2);
+        btnNotify2.setOnClickListener(btnNotifyTwo);
+        Button btnNotify3 = (Button) findViewById(R.id.btnNotify3);
+        btnNotify3.setOnClickListener(btnNotifyThree);
+        Button btnNotify4 = (Button) findViewById(R.id.btnNotify4);
+        btnNotify4.setOnClickListener(btnNotifyFour);
+
+    }
+
+    final static int MSG_ALERT_DLG = 1;
+    final static int MSG_NOTIFY_TWO_DLG = 2;
+    final static int MSG_CHOICE_DLG = 3;
+    final static int MSG_PROCESSING_DLG = 4;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case MSG_ALERT_DLG:
+                    ExampleService.getDialogNotificationManager().addDialog(
+                            KKDialogFactory.createAlertDialog(0, "KKBOX Reminder", "This is a test message", "Confirm",
+                                    new KKDialogPostExecutionListener() {
+
+                                    }));
+                    break;
+                case MSG_NOTIFY_TWO_DLG:
+                    ExampleService.getDialogNotificationManager().addDialog(
+                            KKDialogFactory.createYesOrNoDialog(2, "KKBOX Reminder", "This is a test message", "Yes", "No", new KKDialogPostExecutionListener() {
+
+                            }));
+                    break;
+                case MSG_CHOICE_DLG:
+                    ExampleService.getDialogNotificationManager().addDialog(
+                            KKDialogFactory
+                                    .createThreeChoiceDialog(1, "KKBOX Reminder", "This is a test message", "Retry", "Ignore", "Abort",
+                                            new KKDialogPostExecutionListener() {
+
+                                            }));
+                    break;
+                case MSG_PROCESSING_DLG:
+                    ExampleService.getDialogNotificationManager().addDialog(KKDialogFactory.createProgressingDialog(3, "Processing", new KKDialogPostExecutionListener() {
+                        @Override
+                        public void onCancel() {
+                            super.onCancel();
+                            ExampleService.getDialogNotificationManager().cancelDialog(3);
+                        }
+                    }));
+                    break;
+            }
+        }
+    };
 }
