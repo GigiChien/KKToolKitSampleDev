@@ -26,7 +26,8 @@ public class KKListViewActivity extends KKActivity {
     private KKListView mListView;
     private ExampleForecastAPI mAPI;
     private KKAPIRequest mRequest;
-    String mDay[] = {"Temperature Day 1 : ",
+    String mDay[] = {
+            "Temperature Day 1 : ",
             "Temperature Day 2 : ",
             "Temperature Day 3 : ",
             "Temperature Day 4 : ",

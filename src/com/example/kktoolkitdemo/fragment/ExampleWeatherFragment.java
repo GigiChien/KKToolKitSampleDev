@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.kktoolkitdemo.R;
-import com.example.kktoolkitdemo.SampleUtil;
 import com.example.kktoolkitdemo.api.ExampleWeatherAPI;
 import com.kkbox.toolkit.api.KKAPIListener;
-import com.kkbox.toolkit.api.KKAPIRequest;
 import com.kkbox.toolkit.ui.KKFragment;
 
 /**
@@ -26,7 +23,6 @@ public class ExampleWeatherFragment extends KKFragment {
     TextView mTempH;
     TextView mTempL;
     private ExampleWeatherAPI mAPI;
-    private KKAPIRequest mRequest;
     private ExampleWeatherAPI.WeatherData mWeatherData;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +66,7 @@ public class ExampleWeatherFragment extends KKFragment {
         }
         mAPI = new ExampleWeatherAPI();
         mAPI.setAPIListener(exampleAPIListener);
-        String inputURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city;
-        mRequest = new KKAPIRequest(inputURL, null);
-        mAPI.start(mRequest);
+        mAPI.start(city);
     }
 
     private final KKAPIListener exampleAPIListener = new KKAPIListener() {

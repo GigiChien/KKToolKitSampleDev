@@ -14,6 +14,7 @@ public class ExampleWeatherAPI extends KKAPIBase{
     private WeatherData mWeatherData;
     private String mResponseData = null;
     private KKAPIRequest mRequest = null;
+
     @Override
     protected int parse(String data) {
         mResponseData = data;
@@ -40,11 +41,16 @@ public class ExampleWeatherAPI extends KKAPIBase{
         return ErrorCode.NO_ERROR;
     }
 
-    public void start(KKAPIRequest request){
-        mRequest = request;
-        if(mRequest != null) {
-            execute(mRequest);
+    public void start(String input){
+
+        String inputURL = "http://api.openweathermap.org/data/2.5/weather?q=" + input;
+        if (mRequest != null) {
+            mRequest.cancel();
+        } else {
+            mRequest = new KKAPIRequest(inputURL, null);
         }
+        execute(mRequest);
+
     }
 
     public String getResponseData(){

@@ -18,10 +18,7 @@ import com.kkbox.toolkit.ui.KKListFragment;
  * Created by gigichien on 13/10/23.
  */
 public class ExampleCityListFragment extends KKListFragment{
-    ExampleWeatherAPI mWeatherAPI;
-    private ExampleWeatherAPI mAPI;
-    private KKAPIRequest mRequest;
-    private String mResponse;
+
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

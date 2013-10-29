@@ -17,22 +17,93 @@
  */
 package com.example.kktoolkitdemo.notification;
 
-import android.content.Intent;
 import android.os.Handler;
-import android.os.IBinder;
-import android.util.Log;
 
 import com.kkbox.toolkit.KKService;
+import com.kkbox.toolkit.dialog.KKDialogFactory;
+import com.kkbox.toolkit.dialog.KKDialogPostExecutionListener;
 
 public class ExampleService extends KKService {
 
+    private static Handler handler;
+
     @Override
-	public void initServiceComponent() {
+    public void initServiceComponent() {
+        handler = new Handler() {
+        };
+    }
 
-	}
+    @Override
+    public void finalize() {
+    }
 
-	@Override
-	public void finalize() {
-	}
+
+    public static void postAlertDialogInThreeSec() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getDialogNotificationManager().addDialog(
+                        KKDialogFactory.createAlertDialog(
+                                0,
+                                "KKBOX Reminder",
+                                "This is a test message",
+                                "Confirm",
+                                new KKDialogPostExecutionListener() {
+                                }));
+            }
+        }, 3000);
+
+    }
+
+    public static void postYesNoDialogInThreeSec() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ExampleService.getDialogNotificationManager().addDialog(
+                        KKDialogFactory.createYesOrNoDialog(
+                                2,
+                                "KKBOX Reminder",
+                                "This is a test message",
+                                "Yes",
+                                "No",
+                                new KKDialogPostExecutionListener() {
+                                }));
+            }
+        }, 3000);
+    }
+
+    public static void postChoiseDialogInThreeSec() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ExampleService.getDialogNotificationManager().addDialog(
+                        KKDialogFactory.createThreeChoiceDialog(
+                                1,
+                                "KKBOX Reminder",
+                                "This is a test message",
+                                "Retry",
+                                "Ignore",
+                                "Abort",
+                                new KKDialogPostExecutionListener() {
+                                }));
+            }
+        }, 3000);
+
+    }
+
+
+    public static void postProcessingDialogInThreeSec() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ExampleService.getDialogNotificationManager().addDialog(
+                        KKDialogFactory.createProgressingDialog(
+                                3,
+                                "Processing",
+                                new KKDialogPostExecutionListener() {
+                                }));
+            }
+        }, 3000);
+    }
 
 }

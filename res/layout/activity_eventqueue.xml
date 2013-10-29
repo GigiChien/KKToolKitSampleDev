@@ -53,6 +53,12 @@
             android:gravity="left"/>
 
     <TextView
+            android:id="@+id/label_pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"/>
+
+    <TextView
             android:id="@+id/lock_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

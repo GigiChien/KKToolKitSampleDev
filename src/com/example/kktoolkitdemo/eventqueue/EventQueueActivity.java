@@ -21,24 +21,43 @@ import java.util.ArrayList;
  */
 public class EventQueueActivity extends KKActivity {
     private KKEventQueue eventQueue;
-    TextView txtEventStatus, txtLockID;
-    int mID = 1;
+    private int mID = 1;
+    private int pendingNumber = 0;
+    private ArrayList<Integer> lockIDs;
+
+    private TextView labelEventStatus;
+    private TextView labelLockID;
+    private TextView labelPending;
+    private Button btnAddEvent;
+    private Button btnClearEvent;
+    private Button btnStartEvent;
+    private Button btnLockEvent;
+    private Button btnUnlockEvent;
+    private Button btnUnlockAllEvent;
+
+    private final KKEventQueueListener eventQueueListener = new KKEventQueueListener() {
+        @Override
+        public void onQueueCompleted() {
+            printStatus(eventStatus.FINISHED);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_eventqueue);
 
+        initUI();
         setEventQueueUsage();
-        txtEventStatus.setText("Status : Not started");
+
     }
 
-    ArrayList<Integer> mLockId;
+    private void initUI() {
 
-    private void setEventQueueUsage(){
-        eventQueue = new KKEventQueue();
-        eventQueue.setListener(eventQueuelistener);
+        labelLockID = (TextView) findViewById(R.id.lock_id);
+        labelEventStatus = (TextView) findViewById(R.id.job_status);
+        labelPending = (TextView) findViewById(R.id.label_pending);
 
-        Button btnAddEvent, btnClearEvent, btnStartEvent, btnLockEvent, btnUnlockEvent, btnUnlockAllEvent;
         btnAddEvent = (Button) findViewById(R.id.add__event);
         btnStartEvent = (Button) findViewById(R.id.start_event);
         btnClearEvent = (Button) findViewById(R.id.clear_event);
@@ -46,15 +65,31 @@ public class EventQueueActivity extends KKActivity {
         btnUnlockEvent = (Button) findViewById(R.id.unlock_event);
         btnUnlockAllEvent = (Button) findViewById(R.id.unlock_all_event);
 
-        txtLockID = (TextView) findViewById(R.id.lock_id);
-        txtEventStatus = (TextView) findViewById(R.id.job_status);
+        resetParameter();
+        printStatus(eventStatus.NOT_START);
+        printPendingNumber();
+    }
 
-        mLockId = new ArrayList<Integer>();
+    private void resetParameter() {
+        mID = 1;
+        pendingNumber = 0;
+        if(lockIDs != null) {
+            lockIDs.clear();
+        }
+    }
+
+    private void setEventQueueUsage(){
+
+        lockIDs = new ArrayList<Integer>();
+
+        eventQueue = new KKEventQueue();
+        eventQueue.setListener(eventQueueListener);
 
         btnAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                pendingNumber++;
+                printPendingNumber();
                 eventQueue.addNewThreadEvent(
                         new Runnable() {
                             @Override
@@ -69,7 +104,11 @@ public class EventQueueActivity extends KKActivity {
                         new Runnable() {
                             @Override
                             public void run() {
-
+                                printStatus(eventStatus.RUNNING);
+                                if (pendingNumber > 0) {
+                                    pendingNumber--;
+                                }
+                                printPendingNumber();
                             }
                         }
                 );
@@ -79,22 +118,29 @@ public class EventQueueActivity extends KKActivity {
         btnStartEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!eventQueue.isRunning())
-                    txtEventStatus.setText("Status : Running");
+
                 eventQueue.start();
+                printStatus(eventStatus.RUNNING);
             }
         });
 
         btnLockEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               final int id = mID++;
-               mLockId.add(id);
-               printLockID();
+                final int id = mID++;
+                lockIDs.add(id);
+                pendingNumber++;
+                printLockIDs();
+                printPendingNumber();
                 eventQueue.addCallerThreadEventWithLock(new Runnable() {
                     @Override
                     public void run() {
-                        txtEventStatus.setText("Status : Locked,  ID = " + id);
+                        printStatus(eventStatus.RUNNING);
+                        if(pendingNumber > 0) {
+                            pendingNumber--;
+                        }
+                        printPendingNumber();
+                        printStatus(eventStatus.LOCKED);
                     }
                 }, id);
             }
@@ -103,16 +149,12 @@ public class EventQueueActivity extends KKActivity {
         btnUnlockEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!mLockId.isEmpty())
+                if(!lockIDs.isEmpty())
                 {
-                    eventQueue.unlockEvent(mLockId.get(0));
-                    mLockId.remove(0);
-                    printLockID();
-
-                    if (eventQueue.isRunning())
-                    {
-                        txtEventStatus.setText("Status : Running");
-                    }
+                    eventQueue.unlockEvent(lockIDs.get(0));
+                    lockIDs.remove(0);
+                    printLockIDs();
+//                    printStatus(eventStatus.RUNNING);
                 }
             }
         });
@@ -121,12 +163,9 @@ public class EventQueueActivity extends KKActivity {
             @Override
             public void onClick(View view) {
                 eventQueue.unlockAllEvents();
-                mLockId.clear();
-                printLockID();
-                if (eventQueue.isRunning())
-                {
-                    txtEventStatus.setText("Status : Running");
-                }
+                lockIDs.clear();
+                printLockIDs();
+//                printStatus(eventStatus.RUNNING);
             }
         });
 
@@ -134,33 +173,54 @@ public class EventQueueActivity extends KKActivity {
             @Override
             public void onClick(View view) {
                 eventQueue.clearPendingEvents();
-                if (eventQueue.isRunning()) {
-                    txtEventStatus.setText("Status : Finished");
-                }
+                resetParameter();
+                printPendingNumber();
+                printLockIDs();
             }
         });
     }
-    private final KKEventQueueListener eventQueuelistener = new KKEventQueueListener() {
-        @Override
-        public void onQueueCompleted() {
-            txtEventStatus.setText("Status : Finished");
-        }
-    };
+
     @Override
     protected void onDestroy() {
-        if(eventQueue != null)
-        {
+        if(eventQueue != null) {
             eventQueue.clearPendingEvents();
         }
         super.onDestroy();
     }
 
-    private void printLockID(){
+    private void printLockIDs(){
         String s = "";
-        for(Integer id : mLockId){
+        for(Integer id : lockIDs){
             s += "Lock ID : "+id + "\n";
         }
-        txtLockID.setText(s);
+        labelLockID.setText(s);
     }
 
+    private void printPendingNumber(){
+        if(labelPending != null) {
+            labelPending.setText("Number of pending : " + pendingNumber);
+        }
+    }
+    enum eventStatus {NOT_START, RUNNING, LOCKED, FINISHED};
+    private void printStatus(eventStatus status){
+        switch(status){
+            case NOT_START:
+                labelEventStatus.setText("Status : Not started");
+                break;
+            case RUNNING:
+                if (eventQueue.isRunning()) {
+                    labelEventStatus.setText("Status : Running");
+                }
+                break;
+            case LOCKED:
+                if (!lockIDs.isEmpty()) {
+                    labelEventStatus.setText("Status : Locked,  ID = " + lockIDs.get(0));
+                }
+                break;
+            case FINISHED:
+                labelEventStatus.setText("Status : Finished");
+                break;
+        }
+
+    }
 }

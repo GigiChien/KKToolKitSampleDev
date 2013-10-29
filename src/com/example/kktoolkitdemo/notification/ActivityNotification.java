@@ -35,37 +35,37 @@ public class ActivityNotification extends KKServiceActivity {
     private final OnClickListener btnNotifyOne = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mHandler.sendEmptyMessageDelayed(MSG_ALERT_DLG, 3000);
             Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
             startActivity(intent);
+            ExampleService.postAlertDialogInThreeSec();
 
         }
     };
 
-    private final OnClickListener btnNotifyTwo = new OnClickListener() {
+    private final OnClickListener btnNotifyTwo =    new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mHandler.sendEmptyMessageDelayed(MSG_NOTIFY_TWO_DLG, 3000);
             Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
             startActivity(intent);
+            ExampleService.postYesNoDialogInThreeSec();
         }
     };
 
     private final OnClickListener btnNotifyThree = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mHandler.sendEmptyMessageDelayed(MSG_CHOICE_DLG, 3000);
             Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
             startActivity(intent);
+            ExampleService.postChoiseDialogInThreeSec();
         }
     };
 
     private final OnClickListener btnNotifyFour = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mHandler.sendEmptyMessageDelayed(MSG_PROCESSING_DLG, 3000);
             Intent intent = new Intent(ActivityNotification.this, EmptyActivity.class);
             startActivity(intent);
+            ExampleService.postProcessingDialogInThreeSec();
         }
     };
 
@@ -85,48 +85,4 @@ public class ActivityNotification extends KKServiceActivity {
         btnNotify4.setOnClickListener(btnNotifyFour);
 
     }
-
-    final static int MSG_ALERT_DLG = 1;
-    final static int MSG_NOTIFY_TWO_DLG = 2;
-    final static int MSG_CHOICE_DLG = 3;
-    final static int MSG_PROCESSING_DLG = 4;
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            switch (msg.what) {
-                case MSG_ALERT_DLG:
-                    ExampleService.getDialogNotificationManager().addDialog(
-                            KKDialogFactory.createAlertDialog(0, "KKBOX Reminder", "This is a test message", "Confirm",
-                                    new KKDialogPostExecutionListener() {
-
-                                    }));
-                    break;
-                case MSG_NOTIFY_TWO_DLG:
-                    ExampleService.getDialogNotificationManager().addDialog(
-                            KKDialogFactory.createYesOrNoDialog(2, "KKBOX Reminder", "This is a test message", "Yes", "No", new KKDialogPostExecutionListener() {
-
-                            }));
-                    break;
-                case MSG_CHOICE_DLG:
-                    ExampleService.getDialogNotificationManager().addDialog(
-                            KKDialogFactory
-                                    .createThreeChoiceDialog(1, "KKBOX Reminder", "This is a test message", "Retry", "Ignore", "Abort",
-                                            new KKDialogPostExecutionListener() {
-
-                                            }));
-                    break;
-                case MSG_PROCESSING_DLG:
-                    ExampleService.getDialogNotificationManager().addDialog(KKDialogFactory.createProgressingDialog(3, "Processing", new KKDialogPostExecutionListener() {
-                        @Override
-                        public void onCancel() {
-                            super.onCancel();
-                            ExampleService.getDialogNotificationManager().cancelDialog(3);
-                        }
-                    }));
-                    break;
-            }
-        }
-    };
 }
