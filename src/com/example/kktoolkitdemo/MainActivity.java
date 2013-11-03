@@ -18,10 +18,8 @@ import com.example.kktoolkitdemo.messageview.KKMessageViewActivity;
 import com.example.kktoolkitdemo.notification.ActivityNotification;
 import com.example.kktoolkitdemo.notification.ExampleService;
 import com.example.kktoolkitdemo.resizableview.ResizableViewActivity;
-import com.example.kktoolkitdemo.service.ServiceActivity;
 import com.example.kktoolkitdemo.tabfragment.ActivityTabFragment;
 import com.example.kktoolkitdemo.viewpager.InfiniteViewPagerActivity;
-import com.kkbox.toolkit.ui.KKServiceActivity;
 
 public class MainActivity extends ListActivity {
     private String[] mStrings = {
@@ -36,15 +34,13 @@ public class MainActivity extends ListActivity {
             "KKImageManager",
             "KKAPIBase",
             "KKFragment",
-            "KKDialog",
-            "KKServiceActivity"};
+            "KKDialog"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setListAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, mStrings));
-        Intent intent = new Intent(this, ExampleService.class);
-        startService(intent);
+
 	}
 
     @Override
@@ -87,20 +83,9 @@ public class MainActivity extends ListActivity {
             case 11:
                 intent = new Intent(MainActivity.this, ActivityNotification.class);
                 break;
-            case 12:
-                intent = new Intent(MainActivity.this, ServiceActivity.class);
-                break;
         }
         if (intent != null) {
             startActivity(intent);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(this, ExampleService.class);
-        stopService(intent);
-        super.onStop();
     }
 }

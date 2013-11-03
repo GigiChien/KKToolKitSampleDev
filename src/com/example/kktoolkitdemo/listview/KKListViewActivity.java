@@ -1,21 +1,29 @@
 package com.example.kktoolkitdemo.listview;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
+import com.example.kktoolkitdemo.R;
+import com.example.kktoolkitdemo.SampleUtil;
 import com.example.kktoolkitdemo.api.ExampleForecastAPI;
 import com.example.kktoolkitdemo.api.ExampleWeatherAPI;
 import com.kkbox.toolkit.api.KKAPIListener;
 import com.kkbox.toolkit.api.KKAPIRequest;
 import com.kkbox.toolkit.ui.KKActivity;
 import com.kkbox.toolkit.ui.KKListView;
+import com.kkbox.toolkit.utils.KKDebug;
 
 import java.util.ArrayList;
 
@@ -23,80 +31,58 @@ import java.util.ArrayList;
  * Created by gigichien on 13/10/22.
  */
 public class KKListViewActivity extends KKActivity {
+    private static final String TAG = "KKListViewActivity";
     private KKListView mListView;
-    private ExampleForecastAPI mAPI;
-    private KKAPIRequest mRequest;
-    String mDay[] = {
-            "Temperature Day 1 : ",
-            "Temperature Day 2 : ",
-            "Temperature Day 3 : ",
-            "Temperature Day 4 : ",
-            "Temperature Day 5 : ",
-            "Temperature Day 6 : ",
-            "Temperature Day 7 : "};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FrameLayout root = new FrameLayout(this);
-        this.setContentView(root);
+        setContentView(root);
         mListView = new KKListView(this);
-        root.addView(mListView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mListView.setPullToRefresh(pullToRefreshListener);
         mListView.setLoadMore(loadMoreListener);
-        ArrayAdapter adapter = new ArrayAdapter(KKListViewActivity.this, android.R.layout.simple_list_item_1, mDay);
-        mListView.setAdapter(adapter);
-        loadForecastData();
-   }
+        root.addView(mListView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        String[] mTestItem = getResources().getStringArray(R.array.city);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter(KKListViewActivity.this, android.R.layout.simple_list_item_1, mTestItem);
+        mListView.setAdapter(mAdapter);
+
+    }
 
     private KKListView.OnRefreshListener pullToRefreshListener = new KKListView.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            loadForecastData();
+            KKDebug.i(TAG,"onRefresh");
+            loadForecastData(false);
         }
     };
 
     private KKListView.OnLoadMoreListener loadMoreListener = new KKListView.OnLoadMoreListener() {
         @Override
         public void onLoadMore() {
-            mListView.loadMoreFinished();
-//            saveListViewPosition();
-//            getPeopleListItems(peopleItems.size());
+            KKDebug.i(TAG,"onLoadMore");
+            loadForecastData(true);
         }
     };
 
-    private KKAPIListener exampleAPIListener = new KKAPIListener() {
-        @Override
-        public void onAPIComplete() {
-            ArrayList<Float> mData = mAPI.getForecastData();
-            int size = mData.size();
-            String mTemp[];
-            mTemp = new String[size];
-            for (int i = 0; i < size; i++) {
-                mTemp[i] = mDay[i] + mData.get(i).toString().substring(0, 2);
+    private void loadForecastData(final boolean more) {
+        ExampleWeatherAPI mAPI = new ExampleWeatherAPI();
+        mAPI.setAPIListener(new KKAPIListener() {
+            @Override
+            public void onAPIComplete() {
+                if (more) {
+                    mListView.loadMoreFinished();
+                } else {
+                    mListView.loadCompleted();
+                }
             }
-            ArrayAdapter adapter = new ArrayAdapter(KKListViewActivity.this, android.R.layout.simple_list_item_1, mTemp);
-            mListView.setAdapter(adapter);
+            @Override
+            public void onAPIError(int errorCode) {
+                KKDebug.e("KKListViewActivity", "onAPIError");
+            }
+        });
 
-            mListView.loadCompleted();
-            mListView.loadMoreFinished();
-        }
-
-        @Override
-        public void onAPIError(int errorCode) {
-
-        }
-    };
-
-    private void loadForecastData(){
-        if(mAPI == null)
-        {
-            mAPI = new ExampleForecastAPI();
-            mAPI.setAPIListener(exampleAPIListener);
-        }
-
-        String inputURL = "http://api.openweathermap.org/data/2.5/forecast/daily?id=2643743";
-        mRequest = new KKAPIRequest(inputURL, null);
-        mAPI.start(mRequest);
+        mAPI.start(SampleUtil.test_item[0]);
     }
-
 }

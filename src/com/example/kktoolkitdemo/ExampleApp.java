@@ -13,20 +13,24 @@
  * limitations under the License.
  */
 /**
- * FakeData.java: This is where the fake data used in demonstration comes from.
+ * ExampleApp.java: This is the entry point of the example APP.
+ * This starts KKService, and then go to the main activity.
  */
 package com.example.kktoolkitdemo;
 
-public class SampleUtil {
+import android.app.Application;
+import android.content.Intent;
 
-    public static String LOG_TAG = "KKToolKitDemo";
-    public static String[] test_item = { "Taipei", "Tokyo", "London", "Seattle", "Error" };
+import com.example.kktoolkitdemo.notification.ExampleService;
+import com.kkbox.toolkit.utils.KKDebug;
 
-    public static String[] pic_url = {
-            "http://openweathermap.org/img/w/01d.png",
-            "http://openweathermap.org/img/w/02d.png",
-            "http://openweathermap.org/img/w/03d.png",
-            "http://openweathermap.org/img/w/04d.png",
-            "http://openweathermap.org/img/w/10d.png"
-    };
+public class ExampleApp extends Application {
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+        Intent intent = new Intent(this, ExampleService.class);
+		KKDebug.setDebugEnabled(true);
+        startService(intent);
+    }
 }

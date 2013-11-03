@@ -57,7 +57,7 @@ public class ExampleWeatherFragment extends KKFragment {
 
     @Override
     public void onLoadData() {
-        super.onLoadData();
+
         startFetchData(); //Just show message
         Bundle bundle = getArguments();
         String city = null;
@@ -72,7 +72,6 @@ public class ExampleWeatherFragment extends KKFragment {
     private final KKAPIListener exampleAPIListener = new KKAPIListener() {
         @Override
         public void onAPIComplete() {
-            ExampleWeatherAPI.WeatherData data = mAPI.getWeatherData();
             mWeatherData = mAPI.getWeatherData();
             finishFetchData();
         }

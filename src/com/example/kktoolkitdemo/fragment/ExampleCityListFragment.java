@@ -17,13 +17,17 @@ import com.kkbox.toolkit.ui.KKListFragment;
 /**
  * Created by gigichien on 13/10/23.
  */
-public class ExampleCityListFragment extends KKListFragment{
+public class ExampleCityListFragment extends KKListFragment {
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Bundle bundle = new Bundle();
-            bundle.putString("City", SampleUtil.test_item[position]);
+            if (position == (SampleUtil.test_item.length - 1)) {
+                bundle.putString("City", "");
+            } else {
+                bundle.putString("City", SampleUtil.test_item[position]);
+            }
             switchToFragment(new ExampleWeatherFragment(), bundle);
         }
     };
@@ -32,7 +36,7 @@ public class ExampleCityListFragment extends KKListFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_listview, container, false);
         initView(view);
-        getKKListView().setAdapter(new ArrayAdapter<String>(getKKActivity(),android.R.layout.simple_list_item_1, SampleUtil.test_item));
+        getKKListView().setAdapter(new ArrayAdapter<String>(getKKActivity(), android.R.layout.simple_list_item_1, SampleUtil.test_item));
         getKKListView().setOnItemClickListener(onItemClickListener);
         return view;
     }
