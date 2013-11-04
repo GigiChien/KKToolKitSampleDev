@@ -28,7 +28,6 @@
         <item>Bari</item>
         <item>Italy</item>
         <item>Rome</item>
-        <item>HsinChu</item>
         <item>Kyoto</item>
         <item>Brighton</item>
         <item>New York</item>
@@ -37,17 +36,5 @@
         <item>Tainan</item>
         <item>Brazil</item>
         <item>Canada</item>
-        <item>Bari</item>
-        <item>Italy</item>
-        <item>Rome</item>
-        <item>HsinChu</item>
-        <item>Kyoto</item>
-        <item>Brighton</item>
-        <item>New York</item>
-        <item>Boston</item>
-        <item>Cambridge</item>
-        <item>Tainan</item>
-        <item>Brazil</item>
-        <item>Canada</item>
-    </string-array>
+       </string-array>
 </resources>

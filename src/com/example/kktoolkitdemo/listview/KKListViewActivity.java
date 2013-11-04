@@ -27,9 +27,6 @@ import com.kkbox.toolkit.utils.KKDebug;
 
 import java.util.ArrayList;
 
-/**
- * Created by gigichien on 13/10/22.
- */
 public class KKListViewActivity extends KKActivity {
     private static final String TAG = "KKListViewActivity";
     private KKListView mListView;
